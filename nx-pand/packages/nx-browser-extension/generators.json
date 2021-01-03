@@ -1,0 +1,12 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "name": "nx-browser-extension",
+  "version": "0.0.1",
+  "generators": {
+    "nx-browser-extension": {
+      "factory": "./src/generators/nx-browser-extension/generator",
+      "schema": "./src/generators/nx-browser-extension/schema.json",
+      "description": "nx-browser-extension generator"
+    }
+  }
+}

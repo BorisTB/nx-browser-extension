@@ -1,0 +1,79 @@
+{
+  "version": 2,
+  "projects": {
+    "nx-browser-extension": {
+      "root": "packages/nx-browser-extension",
+      "sourceRoot": "packages/nx-browser-extension/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "packages/nx-browser-extension/**/*.ts"
+            ]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": [
+            "coverage/packages/nx-browser-extension"
+          ],
+          "options": {
+            "jestConfig": "packages/nx-browser-extension/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "build": {
+          "executor": "@nrwl/node:package",
+          "outputs": [
+            "{options.outputPath}"
+          ],
+          "options": {
+            "outputPath": "dist/packages/nx-browser-extension",
+            "tsConfig": "packages/nx-browser-extension/tsconfig.lib.json",
+            "packageJson": "packages/nx-browser-extension/package.json",
+            "main": "packages/nx-browser-extension/src/index.ts",
+            "assets": [
+              "packages/nx-browser-extension/*.md",
+              {
+                "input": "./packages/nx-browser-extension/src",
+                "glob": "**/*.!(ts)",
+                "output": "./src"
+              },
+              {
+                "input": "./packages/nx-browser-extension",
+                "glob": "generators.json",
+                "output": "."
+              },
+              {
+                "input": "./packages/nx-browser-extension",
+                "glob": "executors.json",
+                "output": "."
+              }
+            ]
+          }
+        }
+      }
+    },
+    "nx-browser-extension-e2e": {
+      "projectType": "application",
+      "root": "e2e/nx-browser-extension-e2e",
+      "sourceRoot": "e2e/nx-browser-extension-e2e/src",
+      "targets": {
+        "e2e": {
+          "executor": "@nrwl/nx-plugin:e2e",
+          "options": {
+            "target": "nx-browser-extension:build",
+            "npmPackageName": "@nx-pand/nx-browser-extension",
+            "pluginOutputPath": "dist/packages/nx-browser-extension",
+            "jestConfig": "e2e/nx-browser-extension-e2e/jest.config.js"
+          }
+        }
+      }
+    }
+  },
+  "cli": {
+    "defaultCollection": "@nrwl/workspace"
+  }
+}
