@@ -8,16 +8,19 @@ import {
   Tree,
 } from '@nrwl/devkit';
 import * as path from 'path';
-import { ApplicationGeneratorSchema } from './schema';
+import { NxBrowserExtensionGeneratorSchema } from './schema';
 
-interface NormalizedSchema extends ApplicationGeneratorSchema {
+interface NormalizedSchema extends NxBrowserExtensionGeneratorSchema {
   projectName: string;
   projectRoot: string;
   projectDirectory: string;
-  parsedTags: string[]
+  parsedTags: string[];
 }
 
-function normalizeOptions(host: Tree, options: ApplicationGeneratorSchema): NormalizedSchema {
+function normalizeOptions(
+  host: Tree,
+  options: NxBrowserExtensionGeneratorSchema
+): NormalizedSchema {
   const name = names(options.name).fileName;
   const projectDirectory = options.directory
     ? `${names(options.directory).fileName}/${name}`
@@ -38,32 +41,36 @@ function normalizeOptions(host: Tree, options: ApplicationGeneratorSchema): Norm
 }
 
 function addFiles(host: Tree, options: NormalizedSchema) {
-    const templateOptions = {
-      ...options,
-      ...names(options.name),
-      offsetFromRoot: offsetFromRoot(options.projectRoot),
-      template: ''
-    };
-    generateFiles(host, path.join(__dirname, 'files'), options.projectRoot, templateOptions);
+  const templateOptions = {
+    ...options,
+    ...names(options.name),
+    offsetFromRoot: offsetFromRoot(options.projectRoot),
+    template: '',
+  };
+  generateFiles(
+    host,
+    path.join(__dirname, 'files'),
+    options.projectRoot,
+    templateOptions
+  );
 }
 
-export default async function (host: Tree, options: ApplicationGeneratorSchema) {
+export default async function (
+  host: Tree,
+  options: NxBrowserExtensionGeneratorSchema
+) {
   const normalizedOptions = normalizeOptions(host, options);
-  addProjectConfiguration(
-    host,
-    normalizedOptions.projectName,
-    {
-      root: normalizedOptions.projectRoot,
-      projectType: 'library',
-      sourceRoot: `${normalizedOptions.projectRoot}/src`,
-      targets: {
-        build: {
-          executor: "@nx-pand/application:build",
-        },
+  addProjectConfiguration(host, normalizedOptions.projectName, {
+    root: normalizedOptions.projectRoot,
+    projectType: 'library',
+    sourceRoot: `${normalizedOptions.projectRoot}/src`,
+    targets: {
+      build: {
+        executor: '@nx-pand/nx-browser-extension:build',
       },
-      tags: normalizedOptions.parsedTags,
-    }
-  );
+    },
+    tags: normalizedOptions.parsedTags,
+  });
   addFiles(host, normalizedOptions);
   await formatFiles(host);
 }
