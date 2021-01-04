@@ -13,7 +13,7 @@ describe('nx-browser-extension e2e', () => {
       'dist/packages/nx-browser-extension'
     );
     await runNxCommandAsync(
-      `generate @nx-pand/nx-browser-extension:nx-browser-extension ${plugin}`
+      `generate @nx-pand/nx-browser-extension:application ${plugin}`
     );
 
     const result = await runNxCommandAsync(`build ${plugin}`);
@@ -30,10 +30,10 @@ describe('nx-browser-extension e2e', () => {
         'dist/packages/nx-browser-extension'
       );
       await runNxCommandAsync(
-        `generate @nx-pand/nx-browser-extension:nx-browser-extension ${plugin} --directory subdir`
+        `generate @nx-pand/nx-browser-extension:application ${plugin} --directory subdir`
       );
       expect(() =>
-        checkFilesExist(`libs/subdir/${plugin}/src/index.ts`)
+        checkFilesExist(`apps/subdir/${plugin}/src/index.ts`)
       ).not.toThrow();
       done();
     });
@@ -47,7 +47,7 @@ describe('nx-browser-extension e2e', () => {
         'dist/packages/nx-browser-extension'
       );
       await runNxCommandAsync(
-        `generate @nx-pand/nx-browser-extension:nx-browser-extension ${plugin} --tags e2etag,e2ePackage`
+        `generate @nx-pand/nx-browser-extension:application ${plugin} --tags e2etag,e2ePackage`
       );
       const nxJson = readJson('nx.json');
       expect(nxJson.projects[plugin].tags).toEqual(['e2etag', 'e2ePackage']);

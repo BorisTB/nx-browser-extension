@@ -3,10 +3,11 @@
   "name": "nx-browser-extension",
   "version": "0.0.1",
   "generators": {
-    "nx-browser-extension": {
-      "factory": "./src/generators/nx-browser-extension/generator",
-      "schema": "./src/generators/nx-browser-extension/schema.json",
-      "description": "nx-browser-extension generator"
+    "application": {
+      "factory": "./src/generators/application/generator",
+      "schema": "./src/generators/application/schema.json",
+      "description": "Generate browser extension application",
+      "aliases": ["app"]
     }
   }
 }
